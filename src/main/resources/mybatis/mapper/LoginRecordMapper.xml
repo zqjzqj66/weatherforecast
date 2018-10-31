@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zzuli.weatherforecast.mapper.LoginRecordMapper">
+
+    <resultMap id="simpleResultMap" type="cn.edu.zzuli.weatherforecast.bean.LoginRecord">
+        <id column="login_id" javaType="java.lang.Integer" property="loginId"/>
+        <result column="record_time" javaType="java.time.LocalDateTime" property="recordTime"/>
+        <result column="login_count" javaType="java.lang.Integer" property="loginCount"/>
+    </resultMap>
+
+    <sql id="selectFormulaReportById_sql">
+        SELECT * FROM login_record WHERE login_id =
+        #{loginId} order by record_time
+    </sql>
+
+    <!-- 用户根据信息查询 -->
+    <sql id="selectLoginRecordByInfo_sql">
+        SELECT * FROM login_record
+        <where>
+            <if test="loginId != null">
+                login_id=#{loginId}
+            </if>
+            <if test="recordTime != null">
+                AND record_time=#{recordTime}
+            </if>
+            <if test="loginCount != null">
+                AND login_count = #{loginCount}
+            </if>
+        </where>
+        order by record_time
+    </sql>
+
+
+    <!--根据id来查询-->
+    <select id="selectLoginRecordById" resultMap="simpleResultMap">
+            <include refid="selectFormulaReportById_sql"/>
+    </select>
+
+    <!--根据info来查询-->
+    <select id="selectLoginRecordByInfo" resultMap="simpleResultMap">
+        <include refid="selectFormulaReportByInfo_sql"/>
+    </select>
+
+    <!--根据ID来删除-->
+    <delete id="deleteLoginRecordById">
+        delete from login_record where login_id = #{loginId}
+    </delete>
+
+    <!--根据Info来删除-->
+    <delete id="deleteLoginRecordByInfo">
+        delete from login_record
+        <where>
+            <if test="recordTime != null">
+                record_time = #{recordTime}
+            </if>
+            <if test="loginId != null">
+                AND login_id = #{loginId}
+            </if>
+            <if test="loginCount != null">
+                AND login_count = #{loginCount}
+            </if>
+        </where>
+    </delete>
+
+    <!--插入-->
+    <insert id="insertLoginRecord">
+        INSERT INTO login_record (login_id, record_time, login_count
+        )
+        VALUES (#{loginId}, #{recordTime}, #{loginCount}
+        )
+    </insert>
+
+    <!--修改-->
+    <update id="updateLoginRecord">
+        update login_record
+        <set>
+            <if test="recordTime != null">
+                record_time = #{recordTime},
+            </if>
+            <if test="loginCount != null">
+                login_count = #{loginCount}
+            </if>
+        </set>
+    </update>
+</mapper>

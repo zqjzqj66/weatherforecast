@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zzuli.weatherforecast.mapper.UserMapper">
+    <resultMap id="simpleResultMap" type="cn.edu.zzuli.weatherforecast.bean.User">
+        <result column="user_id" javaType="java.lang.Integer" property="userId"/>
+        <result column="user_name" javaType="java.lang.String" property="userName"/>
+        <result column="passward" javaType="java.lang.String" property="passward"/>
+        <result column="email" javaType="java.lang.String" property="email"/>
+        <result column="use_type" javaType="java.lang.Integer" property="useType"/>
+        <result column="city_id" javaType="java.lang.String" property="cityId"/>
+        <result column="login_num" javaType="java.lang.Integer" property="loginNum"/>
+        <result column="signature" javaType="java.lang.String" property="signature"/>
+        <result column="head_location" javaType="java.lang.String" property="headLocation"/>
+        <result column="hour_login_num" javaType="java.lang.String" property="hourLoginNum"/>
+        <result column="user_status" javaType="java.lang.Integer" property="userStatus"/>
+    </resultMap>
+
+    <sql id="selectUserById_sql">
+        SELECT * FROM user WHERE user_id = #{userId}
+    </sql>
+
+    <sql id="selectUserByInfo_sql">
+        SELECT * FORM user
+        <where>
+            <if test=" userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="userName != null">
+                user_name = #{username},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="userType != null">
+                user_type = #{userType},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId},
+            </if>
+            <if test="loginNum != null">
+                login_num = #{loginNum},
+            </if>
+            <if test="signature != null">
+                signature = #{signature},
+            </if>
+            <if test="headLocation != null">
+                head_location = #{headLocation},
+            </if>
+            <if test="hourLoginNum != null">
+                hour_login_num = #{hourLoginNum}
+            </if>
+            <if test="userStatus!= null">
+                user_status = #{userStatus}
+            </if>
+        </where>
+    </sql>
+
+    <!--根据id来查询-->
+    <select id="selectUserById" resultMap="simpleResultMap">
+        <include refid="selectUserById_sql"/>
+    </select>
+
+    <!--根据条件来查询-->
+    <select id="selectUserByInfo" resultMap="simpleResultMap">
+        <include refid="selectUserByInfo_sql"/>
+    </select>
+
+    <!--根据id来删除-->
+    <delete id="deleteuserById">
+        delete from user WHERE user_id = #{userId}
+    </delete>
+
+    <!--根据条件删除-->
+    <delete id="deleteuserByInfo">
+        delete from user
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="userName != null">
+                AND user_name = #{userName}
+            </if>
+            <if test="passward != null">
+                AND passward = #{passward}
+            </if>
+            <if test="email != null">
+                AND email = #{email}
+            </if>
+            <if test="userType != null">
+                AND user_type = #{userType}
+            </if>
+            <if test="cityId!= null">
+                AND city_id = #{cityId}
+            </if>
+            <if test="loginNum != null">
+                AND login_num = #{loginNum}
+            </if>
+            <if test="signature != null">
+                AND signature = #{signature}
+            </if>
+            <if test="headLocation!= null">
+                AND head_location = #{headLocation}
+            </if>
+            <if test="hourLoginNum!= null">
+                AND hour_login_num = #{hourLoginNum}
+            </if>
+            <if test="userStatus!= null">
+                AND user_status= #{userStatus}
+            </if>
+        </where>
+    </delete>
+
+    <!--插入-->
+    <insert id="insert">
+        INSERT INTO user (user_Id, user_name, passward,
+                          email, user_type, city_id,
+                          login_num, signature,
+                          head_location,hour_login_num,user_status )
+        VALUES (#{userId}, #{userName}, #{passward},
+                #{email}, #{userType}, #{cityId},
+                #{loginNum}, #{signature}
+                #{headLocation}, #{hourLoginNum},#{userStatus})
+    </insert>
+
+    <!--更新-->
+    <update id="updateUser">
+        update user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="passward != null">
+                passward = #{passward},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="userType != null">
+                user_type = #{userType},
+            </if>
+            <if test="cityId!= null">
+                city_id = #{cityId},
+            </if>
+            <if test="loginNum != null">
+                login_num = #{loginNum},
+            </if>
+            <if test="signature != null">
+                signature = #{signature},
+            </if>
+            <if test="headLocation!= null">
+                head_location = #{headLocation},
+            </if>
+            <if test="hourLoginNum!= null">
+                hour_login_num = #{hourLoginNum}
+            </if>
+            <if test="userStatus!= null">
+                user_status= #{userStatus}
+            </if>
+        </set>
+        where user_id = #{userId}
+    </update>
+</mapper>
